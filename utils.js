@@ -82,7 +82,7 @@ const doPolygonsIntersect = (a, b) => {
   return true;
 };
 
-export const runCollisionDetection = (playerData, world, playerBoundingBox) => {
+const runCollisionDetection = (playerData, world, playerBoundingBox) => {
   const playerBBoxRotated = getRotatedRectangle(playerData.rotation, playerData.position, playerBoundingBox);
 
   const worldObjects = world.collidableObjects;
