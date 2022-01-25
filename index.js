@@ -1,1 +1,1 @@
-export { getUpdatedPlayerPositionRotation, getRandomInt } from './utils';
+export * from './utils';
