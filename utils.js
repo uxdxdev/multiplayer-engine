@@ -82,8 +82,8 @@ const doPolygonsIntersect = (a, b) => {
   return true;
 };
 
-const runCollisionDetection = (playerData, world, playerBoundingBox) => {
-  const playerBBoxRotated = getRotatedRectangle(playerData.rotation, playerData.position, playerBoundingBox);
+const runCollisionDetection = (playerData, world) => {
+  const playerBBoxRotated = getRotatedRectangle(playerData.rotation, playerData.position, world.playerBoundingBox);
 
   const worldObjects = world.collidableObjects;
   for (const worldObject of worldObjects) {
@@ -97,12 +97,12 @@ const runCollisionDetection = (playerData, world, playerBoundingBox) => {
   return false;
 };
 
-const getUpdatedPosition = (position, { forward, backward, left, right }, playerSpeed, delta, world) => {
+const getUpdatedPosition = (position, { forward, backward, left, right }, world) => {
   const newPosition = { ...position };
-  if (left) newPosition.x -= playerSpeed * delta;
-  if (right) newPosition.x += playerSpeed * delta;
-  if (forward) newPosition.z -= playerSpeed * delta;
-  if (backward) newPosition.z += playerSpeed * delta;
+  if (left) newPosition.x -= world.playerMoveIncrement;
+  if (right) newPosition.x += world.playerMoveIncrement;
+  if (forward) newPosition.z -= world.playerMoveIncrement;
+  if (backward) newPosition.z += world.playerMoveIncrement;
 
   if (newPosition.x < -world.width) newPosition.x = world.width;
   if (newPosition.x > world.width) newPosition.x = -world.width;
@@ -112,7 +112,7 @@ const getUpdatedPosition = (position, { forward, backward, left, right }, player
   return newPosition;
 };
 
-export const getUpdatedPlayerPositionRotation = (currentPosition, currentRotation, controls, playerSpeed, delta, worldData, playerBoundingBox) => {
+export const getUpdatedPlayerPositionRotation = (currentPosition, currentRotation, controls, worldData) => {
   let updatedPosition = null;
   let updatedRotation = null;
 
@@ -130,8 +130,8 @@ export const getUpdatedPlayerPositionRotation = (currentPosition, currentRotatio
   updatedPosition = currentPosition;
   updatedRotation = currentRotation;
 
-  const newPosition = getUpdatedPosition(currentPosition, { forward, backward, left, right }, playerSpeed, delta, worldData);
-  const isPlayerColliding = runCollisionDetection({ position: newPosition, rotation: newRotation }, worldData, playerBoundingBox);
+  const newPosition = getUpdatedPosition(currentPosition, { forward, backward, left, right }, worldData);
+  const isPlayerColliding = runCollisionDetection({ position: newPosition, rotation: newRotation }, worldData);
   if (!isPlayerColliding) {
     updatedPosition = newPosition;
     updatedRotation = newRotation;
