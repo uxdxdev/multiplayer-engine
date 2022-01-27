@@ -112,14 +112,15 @@ const getUpdatedPosition = (position, { forward, backward, left, right }, world)
   return newPosition;
 };
 
+const frontVector = new Vector3();
+const sideVector = new Vector3();
+const direction = new Vector3();
+
 export const getUpdatedPlayerPositionRotation = (currentPosition, currentRotation, controls, worldData) => {
   let updatedPosition = null;
   let updatedRotation = null;
 
   // rotation
-  const frontVector = new Vector3();
-  const sideVector = new Vector3();
-  const direction = new Vector3();
   const { forward, backward, left, right } = controls;
   frontVector.set(0, 0, Number(backward) - Number(forward));
   sideVector.set(Number(left) - Number(right), 0, 0);
